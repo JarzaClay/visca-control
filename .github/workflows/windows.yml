@@ -17,7 +17,7 @@ jobs:
 
       - name: Install ncat with Chocolatey
         run: |
-          choco install nmap -y
+          choco install ncat -y
         shell: powershell
 
       - name: Set up g++ with Chocolatey
