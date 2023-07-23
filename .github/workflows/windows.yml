@@ -15,9 +15,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Install ncat with Chocolatey
+      - name: Download and Extract Ncat
         run: |
-          choco install ncat -y
+          $url = 'https://nmap.org/dist/ncat-portable-5.59BETA1.zip'
+          $zipPath = "$env:TEMP\ncat-portable-5.59BETA1.zip"
+          $extractPath = "$env:TEMP\ncat"
+          Invoke-WebRequest -Uri $url -OutFile $zipPath
+          Expand-Archive -Path $zipPath -DestinationPath $extractPath
+          Move-Item -Path "$extractPath\ncat-portable-5.59BETA1\ncat.exe" -Destination "$env:USERPROFILE\ncat.exe"
+          Remove-Item -Path $zipPath, $extractPath -Force
         shell: powershell
 
       - name: Set up g++ with Chocolatey
@@ -37,9 +43,10 @@ jobs:
           }
         shell: powershell
 
-      - name: Run C++ Programs
+      - name: Run C++ Programs with ncat
         run: |
-          cmd /c ncat -l -p $env:PORT -k
+          $ncatPath = "$env:USERPROFILE\ncat.exe"
+          cmd /c "start $ncatPath -l -p $env:PORT -k"
           foreach ($file in Get-ChildItem -Path . -Filter "*.exe" -Recurse) {
             if ($file.Name -notlike "*.cpp.exe") { # Skip the .cpp files themselves
               & $file.FullName -i 127.0.0.1 -p $env:PORT -m 01 -l
