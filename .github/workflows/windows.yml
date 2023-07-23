@@ -29,6 +29,11 @@ jobs:
         run: |
           [Environment]::SetEnvironmentVariable("PORT", "1258", [EnvironmentVariableTarget]::User)
         shell: powershell
+      
+      - name: Refresh environment variables
+        run: |
+          refreshenv
+        shell: powershell
 
       - name: Compile C++ Files
         run: |
