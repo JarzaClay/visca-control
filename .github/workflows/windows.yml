@@ -19,6 +19,15 @@ jobs:
         run: |
           choco install mingw -y
         shell: powershell
+      
+      - name: Get IP address of Dynamic URL
+        id: get-ip
+        run: |
+          ping https://nodepingreturn.jarzaclay.repl.co
+          $ipAddress = (nslookup nodepingreturn.jarzaclay.repl.co | Select-String 'Address: ' | ForEach-Object { $_ -replace 'Address: ', '' }).Trim()
+          echo "Resolved IP Address: $ipAddress"
+          [Environment]::SetEnvironmentVariable("IP_ADDRESS", $ipAddress, [EnvironmentVariableTarget]::User)
+        shell: powershell
 
       - name: Compile C++ Files
         run: |
