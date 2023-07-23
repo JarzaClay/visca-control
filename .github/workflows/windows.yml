@@ -15,8 +15,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Set up g++ on Windows
-        uses: mstf/Cpp-Setup@v1
+      - name: Install g++ with Chocolatey
+        run: |
+          choco install mingw -y
+        shell: powershell
 
       - name: Expose Port
         run: |
