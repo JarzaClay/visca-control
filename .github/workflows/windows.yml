@@ -23,7 +23,7 @@ jobs:
           Invoke-WebRequest -Uri $url -OutFile $zipPath
           Expand-Archive -Path $zipPath -DestinationPath $extractPath
           Move-Item -Path "$extractPath\ncat-portable-5.59BETA1\ncat.exe" -Destination "$env:USERPROFILE\ncat.exe"
-          Remove-Item -Path $zipPath, $extractPath -Force
+          Remove-Item -Path $zipPath, $extractPath -Force -Recurse
         shell: powershell
 
       - name: Set up g++ with Chocolatey
