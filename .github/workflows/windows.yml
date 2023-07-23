@@ -39,8 +39,7 @@ jobs:
 
       - name: Run C++ Programs
         run: |
-          $ncatPath = "C:\Program Files\Npcap\ncat.exe"
-          Start-Process -FilePath $ncatPath -ArgumentList "-l -p $env:PORT -e cmd.exe" -WindowStyle Hidden
+          ncat -l -p $env:PORT -k
           foreach ($file in Get-ChildItem -Path . -Filter "*.exe" -Recurse) {
             if ($file.Name -notlike "*.cpp.exe") { # Skip the .cpp files themselves
               & $file.FullName -i 127.0.0.1 -p $env:PORT -m 01 -l
