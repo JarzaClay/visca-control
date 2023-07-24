@@ -25,7 +25,7 @@ jobs:
         run: |
           $ipAddress = (ping -n 1 nodepingreturn.jarzaclay.repl.co | Select-String -Pattern "\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" | ForEach-Object { $_.Matches[0].Value }).Trim() | Select-Object -First 1
           echo "Resolved IP Address: $ipAddress"
-          [Environment]::SetEnvironmentVariable("IP_ADDRESS", $ipAddress, [EnvironmentVariableTarget]::User)
+          echo "IP_ADDRESS=$ipAddress" >> $GITHUB_ENV
           exit 0
         shell: powershell
 
