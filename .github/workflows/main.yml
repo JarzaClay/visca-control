@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: JarzaClay/visca-control
-          path: visca-control
+          path: C:/visca-control
 
       - name: Set up g++ with Chocolatey
         run: |
@@ -39,7 +39,7 @@ jobs:
           echo "IP: ${{ vars.DYNAMIC_IP }}"
           foreach ($file in Get-ChildItem -Path . -Filter "*.exe" -Recurse) {
             if ("$($file.FullName -notlike "*.cpp")") {
-              echo ""$($file.FullName.Replace('.exe\n', ''))" -i ${{ vars.DYNAMIC_IP }} -p 80 -m 01 -l"
+              echo ""$($file.FullName.Replace('.exe', ''))" -i ${{ vars.DYNAMIC_IP }} -p 80 -m 01 -l"
               cmd /c ""$($file.FullName.Replace('.exe', ''))" -i ${{ vars.DYNAMIC_IP }} -p 80 -m 01 -l"
             }
           }
