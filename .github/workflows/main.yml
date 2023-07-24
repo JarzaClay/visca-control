@@ -67,17 +67,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          path: /home/runner/work/visca-control/visca-control/path
+          path: /home/runner/work/visca-control/visca-control/path/
 
       - name: Download 'compiled-binaries' artifact
         uses: actions/download-artifact@v3
         with:
           name: compiled-binaries
-          directory: /home/runner/work/visca-control/visca-control/path
+          path: /home/runner/work/visca-control/visca-control/path/
 
       - name: Extract artifact contents to 'bin' folder
         run: |
-          unzip -q /home/runner/work/visca-control/visca-control/path/compiled-binaries.zip -d bin
+          unzip -q /home/runner/work/visca-control/visca-control/path/compiled-binaries.zip -d /home/runner/work/visca-control/visca-control/path/bin/
         shell: bash
 
       - name: Commit changes to 'bin' folder
