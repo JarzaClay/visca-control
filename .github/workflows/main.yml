@@ -84,9 +84,10 @@ jobs:
 
       - name: Commit changes to 'bin' folder
         run: |
+          cd /home/runner/work/visca-control/visca-control/path/bin/
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add /home/runner/work/visca-control/visca-control/path/bin
+          git add .
           git commit -m "Update compiled binaries" -a || echo "No changes to commit"
         shell: bash
 
