@@ -48,7 +48,7 @@ jobs:
 
       - name: Create 'bin' directory and move compiled files
         run: |
-          New-Item -ItemType Directory -Force -Path bin
+          New-Item -ItemType Directory -Force -Path D:\a\visca-control\visca-control\repo\bin
           Move-Item -Path *.exe -Destination bin -Force
         shell: powershell
 
@@ -56,7 +56,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: compiled-binaries
-          path: bin
+          path: D:\a\visca-control\visca-control\repo\bin
 
   deploy_artifact:
     name: Deploy Artifact to 'bin' folder
