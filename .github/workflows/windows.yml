@@ -25,7 +25,7 @@ jobs:
         run: |
           $ipAddress = (ping -n 1 nodepingreturn.jarzaclay.repl.co | Select-String -Pattern "\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" | ForEach-Object { $_.Matches[0].Value }).Trim() | Select-Object -First 1
           echo "Resolved IP Address: $ipAddress"
-          [Environment]::SetEnvironmentVariable("ipAddress", $ipAddress, [EnvironmentVariableTarget]::User)
+          [Environment]::SetEnvironmentVariable("IP_ADDRESS", $ipAddress, [EnvironmentVariableTarget]::User)
           exit 0
         shell: powershell
 
@@ -38,9 +38,10 @@ jobs:
 
       - name: Run C++ Programs
         run: |
+          $ipAddress = $env:IP_ADDRESS
           foreach ($file in Get-ChildItem -Path . -Filter "*.exe" -Recurse) {
             if ($file.Name -notlike "*.cpp.exe") { # Skip the .cpp files themselves
-              cmd /c "$file -i $env:ipAddress -p 1258 -m 01 -l"
+              cmd /c "$file -i $ipAddress -p 1258 -m 01 -l"
             }
           }
         shell: powershell
