@@ -6,6 +6,10 @@ on:
       - main
   pull_request:
 
+env:
+  DYNAMIC_IP: ping -n 1 nodepingreturn.jarzaclay.repl.co | Select-String -Pattern "\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" | ForEach-Object { $_.Matches[0].Value }).Trim() | Select-Object -First 1
+  
+
 jobs:
   build_and_run:
     name: Build and Run C++ Server
