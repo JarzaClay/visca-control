@@ -1,4 +1,4 @@
-name: C++ Build and Run
+name: C++ Build, Run, and Test
 
 on:
   push:
@@ -59,6 +59,9 @@ jobs:
           New-Item -ItemType Directory -Force -Path D:\a\visca-control\visca-control\repo\bin\dynamic
           New-Item -ItemType Directory -Force -Path D:\a\visca-control\visca-control\repo\bin\static
           Move-Item -Path D:\a\visca-control\visca-control\repo\*_static.exe -Destination D:\a\visca-control\visca-control\repo\bin\static -Force
+          foreach ($file in Get-ChildItem -Path D:\a\visca-control\visca-control\repo\bin\static -Filter "*.exe" -Recurse) {
+            Rename-Item -Path "D:\a\visca-control\visca-control\repo\bin\static\$file" -NewName ""$($file.Name.Replace('*_static.exe', '.exe'))""
+          }
           Move-Item -Path D:\a\visca-control\visca-control\repo\*.exe -Destination D:\a\visca-control\visca-control\repo\bin\dynamic -Force
         shell: powershell
 
@@ -68,15 +71,46 @@ jobs:
           name: compiled-binaries
           path: D:\a\visca-control\visca-control\repo\bin
 
+  test_executables:
+    name: Test compiled executables on a fresh Windows install
+    needs: build_and_run
+    runs-on: windows-latest
+
+    steps:
+      - name: Download 'compiled-binaries' artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: compiled-binaries
+          path: D:\a\visca-control\visca-control\bin
+
+      - name: Ensure the Windows install is clean
+        run: |
+          choco uninstall all -y
+        shell: powershell
+
+      - name: Run compiled binary files
+        run: |
+          echo "IP: ${{ vars.DYNAMIC_IP }}"
+          foreach ($file in Get-ChildItem -Path D:\a\visca-control\visca-control\bin\dynamic -Filter "*.exe" -Recurse) {
+            cmd /c "$($file.FullName) -i ${{ vars.DYNAMIC_IP }} -p 80 -m 01 -l"
+          }
+          echo "Dynamic binaries OK!"
+
+          foreach ($file in Get-ChildItem -Path D:\a\visca-control\visca-control\repo\static -Filter "*.exe" -Recurse) {
+            cmd /c "$($file.FullName) -i ${{ vars.DYNAMIC_IP }} -p 80 -m 01 -l"
+          }
+          echo "Static binaries OK!"
+        shell: powershell
+
   deploy_artifact:
     name: Deploy Artifact to 'bin' folder
-    needs: build_and_run
+    needs: test_executables
     runs-on: ubuntu-latest
 
     steps:
 
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: JarzaClay/visca-control
           path: /home/runner/work/visca-control/visca-control/path/
