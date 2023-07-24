@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: JarzaClay/visca-control
           path: D:\a\visca-control\visca-control\repo
@@ -29,8 +29,8 @@ jobs:
       - name: Compile C++ Files
         run: |
           foreach ($file in Get-ChildItem -Path D:\a\visca-control\visca-control\repo -Filter "*.cpp" -Recurse) {
-            echo "$($file.Replace('.cpp', ''))"
-            & g++ "$($file)" -o "$($file.Replace('.cpp', ''))" -lws2_32
+            echo "$($file.Name.Replace('.cpp', ''))"
+            & g++ "$file" -o "$($file.Name.Replace('.cpp', ''))" -lws2_32
           }
         shell: powershell
 
@@ -39,8 +39,8 @@ jobs:
           echo "IP: ${{ vars.DYNAMIC_IP }}"
           foreach ($file in Get-ChildItem -Path D:\a\visca-control\visca-control\repo -Filter "*.exe" -Recurse) {
             if ("$($file.FullName -notlike "*.cpp")") {
-              echo ""$($file.Replace('.exe', ''))" -i ${{ vars.DYNAMIC_IP }} -p 80 -m 01 -l"
-              cmd /c ""$($file.Replace('.exe', ''))" -i ${{ vars.DYNAMIC_IP }} -p 80 -m 01 -l"
+              echo $file -i ${{ vars.DYNAMIC_IP }} -p 80 -m 01 -l"
+              cmd /c $file -i ${{ vars.DYNAMIC_IP }} -p 80 -m 01 -l"
             }
           }
         shell: powershell
@@ -52,7 +52,7 @@ jobs:
         shell: powershell
 
       - name: Upload 'bin' folder as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: compiled-binaries
           path: bin
@@ -64,10 +64,10 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Download 'compiled-binaries' artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: compiled-binaries
 
