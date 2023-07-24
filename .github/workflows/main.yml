@@ -66,22 +66,25 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          path: /home/runner/work/visca-control/visca-control/path
 
       - name: Download 'compiled-binaries' artifact
         uses: actions/download-artifact@v3
         with:
           name: compiled-binaries
+          directory: /home/runner/work/visca-control/visca-control/path
 
       - name: Extract artifact contents to 'bin' folder
         run: |
-          unzip -q compiled-binaries.zip -d bin
+          unzip -q /home/runner/work/visca-control/visca-control/path/compiled-binaries.zip -d bin
         shell: bash
 
       - name: Commit changes to 'bin' folder
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add bin/
+          git add /home/runner/work/visca-control/visca-control/path/bin
           git commit -m "Update compiled binaries" -a || echo "No changes to commit"
         shell: bash
 
