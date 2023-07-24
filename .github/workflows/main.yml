@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: JarzaClay/visca-control
-          path: D:\a\visca-control\visca-control\..\..\
+          path: D:\a\visca-control\visca-control\repo
 
       - name: Set up g++ with Chocolatey
         run: |
@@ -28,19 +28,19 @@ jobs:
 
       - name: Compile C++ Files
         run: |
-          foreach ($file in Get-ChildItem -Path . -Filter "*.cpp" -Recurse) {
-            echo "$($file.FullName.Replace('.cpp', ''))"
-            & g++ "$($file.FullName)" -o "$($file.FullName.Replace('.cpp', ''))" -lws2_32
+          foreach ($file in Get-ChildItem -Path D:\a\visca-control\visca-control\repo -Filter "*.cpp" -Recurse) {
+            echo "$($file.Replace('.cpp', ''))"
+            & g++ "$($file)" -o "$($file.Replace('.cpp', ''))" -lws2_32
           }
         shell: powershell
 
       - name: Run C++ Programs
         run: |
           echo "IP: ${{ vars.DYNAMIC_IP }}"
-          foreach ($file in Get-ChildItem -Path . -Filter "*.exe" -Recurse) {
+          foreach ($file in Get-ChildItem -Path D:\a\visca-control\visca-control\repo -Filter "*.exe" -Recurse) {
             if ("$($file.FullName -notlike "*.cpp")") {
-              echo ""$($file.FullName.Replace('.exe', ''))" -i ${{ vars.DYNAMIC_IP }} -p 80 -m 01 -l"
-              cmd /c ""$($file.FullName.Replace('.exe', ''))" -i ${{ vars.DYNAMIC_IP }} -p 80 -m 01 -l"
+              echo ""$($file.Replace('.exe', ''))" -i ${{ vars.DYNAMIC_IP }} -p 80 -m 01 -l"
+              cmd /c ""$($file.Replace('.exe', ''))" -i ${{ vars.DYNAMIC_IP }} -p 80 -m 01 -l"
             }
           }
         shell: powershell
