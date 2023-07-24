@@ -8,7 +8,6 @@ on:
 
 env:
   DYNAMIC_IP: ping -n 1 nodepingreturn.jarzaclay.repl.co | Select-String -Pattern "\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" | ForEach-Object { $_.Matches[0].Value }).Trim() | Select-Object -First 1
-  
 
 jobs:
   build_and_run:
@@ -18,6 +17,9 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+        with:
+          repository: JarzaClay/visca-control
+          path: visca-control
 
       - name: Set up g++ with Chocolatey
         run: |
@@ -40,7 +42,7 @@ jobs:
             }
           }
         shell: powershell
-      
+
       - name: Create 'bin' directory and move compiled files
         run: |
           New-Item -ItemType Directory -Force -Path bin
@@ -52,3 +54,34 @@ jobs:
         with:
           name: compiled-binaries
           path: bin
+
+  deploy_artifact:
+    name: Deploy Artifact to 'bin' folder
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Download 'compiled-binaries' artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: compiled-binaries
+
+      - name: Extract artifact contents to 'bin' folder
+        run: |
+          unzip -q compiled-binaries.zip -d bin
+        shell: bash
+
+      - name: Commit changes to 'bin' folder
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add bin/
+          git commit -m "Update compiled binaries" -a || echo "No changes to commit"
+        shell: bash
+
+      - name: Push changes to the repository
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
