@@ -49,7 +49,7 @@ jobs:
       - name: Create 'bin' directory and move compiled files
         run: |
           New-Item -ItemType Directory -Force -Path D:\a\visca-control\visca-control\repo\bin
-          Move-Item -Path *.exe -Destination bin -Force
+          Move-Item -Path *.exe -Destination D:\a\visca-control\visca-control\repo\bin -Force
         shell: powershell
 
       - name: Upload 'bin' folder as artifact
