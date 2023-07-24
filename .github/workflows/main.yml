@@ -28,6 +28,7 @@ jobs:
 
       - name: Compile C++ Files
         run: |
+          ls
           foreach ($file in Get-ChildItem -Path D:\a\visca-control\visca-control\repo -Filter "*.cpp" -Recurse) {
             echo "$($file.Name.Replace('.cpp', ''))"
             & g++ "$file" -o "$($file.Name.Replace('.cpp', ''))" -lws2_32
