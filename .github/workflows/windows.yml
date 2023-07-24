@@ -36,7 +36,7 @@ jobs:
           echo "IP: ${{ vars.DYNAMIC_IP }}"
           foreach ($file in Get-ChildItem -Path . -Filter "*.exe" -Recurse) {
             if ($file.Name -notlike "*.cpp.exe") { # Skip the .cpp files themselves
-              cmd /c "$file -i nodepingreturn.jarzaclay.repl.co/ -p 1258 -m 01 -l"
+              cmd /c "$file -i ${{ vars.DYNAMIC_IP }} -p 80 -m 01 -l"
             }
           }
         shell: powershell
