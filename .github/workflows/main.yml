@@ -21,17 +21,24 @@ jobs:
           repository: JarzaClay/visca-control
           path: D:\a\visca-control\visca-control\repo
 
-      - name: Set up g++ with Chocolatey
+      - name: Set up C++ compilers with Chocolatey
         run: |
-          choco install mingw -y
+          choco install mingw -y --force
         shell: powershell
 
-      - name: Compile C++ Files
+      - name: Compile C++ Files Dynamically with g++ # G++ dynamic
         run: |
-          ls
           foreach ($file in Get-ChildItem -Path D:\a\visca-control\visca-control\repo\ -Filter "*.cpp" -Recurse) {
             echo "$($file.Name.Replace('.cpp', ''))"
             & g++ "$($file.FullName)" -o "$($file.FullName.Replace('.cpp', ''))" -lws2_32
+          }
+        shell: powershell
+
+      - name: Compile C++ Files Statically with g++ # G++ static
+        run: |
+          foreach ($file in Get-ChildItem -Path D:\a\visca-control\visca-control\repo\ -Filter "*.cpp" -Recurse) {
+            echo "$($file.Name.Replace('.cpp', ''))"
+            & g++ "$($file.FullName)" -o "$($file.FullName.Replace('.cpp', ''))_static" -lws2_32 -static
           }
         shell: powershell
 
@@ -46,10 +53,13 @@ jobs:
           }
         shell: powershell
 
-      - name: Create 'bin' directory and move compiled files
+      - name: Create 'bin' directory with both compilation directories and move compiled files
         run: |
           New-Item -ItemType Directory -Force -Path D:\a\visca-control\visca-control\repo\bin
-          Move-Item -Path D:\a\visca-control\visca-control\repo\*.exe -Destination D:\a\visca-control\visca-control\repo\bin -Force
+          New-Item -ItemType Directory -Force -Path D:\a\visca-control\visca-control\repo\bin\dynamic
+          New-Item -ItemType Directory -Force -Path D:\a\visca-control\visca-control\repo\bin\static
+          Move-Item -Path D:\a\visca-control\visca-control\repo\*_static.exe -Destination D:\a\visca-control\visca-control\repo\bin\static -Force
+          Move-Item -Path D:\a\visca-control\visca-control\repo\*.exe -Destination D:\a\visca-control\visca-control\repo\bin\dynamic -Force
         shell: powershell
 
       - name: Upload 'bin' folder as artifact
@@ -76,11 +86,6 @@ jobs:
         with:
           name: compiled-binaries
           path: /home/runner/work/visca-control/visca-control/path/bin/
-
-      - name: Check directory for downloaded files
-        run: |
-          ls /home/runner/work/visca-control/visca-control/path/bin/
-        shell: bash
 
       - name: Commit changes to 'bin' folder
         run: |
