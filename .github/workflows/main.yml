@@ -73,7 +73,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: compiled-binaries
-          path: /home/runner/work/visca-control/visca-control/path/
+          path: /home/runner/work/visca-control/visca-control/path/.
 
       - name: Check directory for zip file
         run: |
