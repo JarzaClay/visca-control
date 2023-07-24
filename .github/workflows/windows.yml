@@ -40,3 +40,15 @@ jobs:
             }
           }
         shell: powershell
+      
+      - name: Create 'bin' directory and move compiled files
+        run: |
+          New-Item -ItemType Directory -Force -Path bin
+          Move-Item -Path *.exe -Destination bin -Force
+        shell: powershell
+
+      - name: Upload 'bin' folder as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: compiled-binaries
+          path: bin
