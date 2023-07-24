@@ -23,8 +23,9 @@ jobs:
       - name: Get IP address of Dynamic URL
         id: get-ip
         run: |
-          ping https://nodepingreturn.jarzaclay.repl.co
-          $ipAddress = (nslookup nodepingreturn.jarzaclay.repl.co | Select-String 'Address: ' | ForEach-Object { $_ -replace 'Address: ', '' }).Trim()
+          ping nodepingreturn.jarzaclay.repl.co
+          $ipAddresses = @(nslookup $url | Select-String 'Address: ' | ForEach-Object { $_ -replace 'Address: ', '' })
+          $ipAddress = $ipAddresses[1]
           echo "Resolved IP Address: $ipAddress"
           [Environment]::SetEnvironmentVariable("IP_ADDRESS", $ipAddress, [EnvironmentVariableTarget]::User)
         shell: powershell
