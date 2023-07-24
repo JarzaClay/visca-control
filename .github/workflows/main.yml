@@ -29,8 +29,8 @@ jobs:
       - name: Compile C++ Files
         run: |
           foreach ($file in Get-ChildItem -Path . -Filter "*.cpp" -Recurse) {
-            echo "($file.FullName.Replace('.cpp', ''))"
-            & g++ $file -o "($file.FullName.Replace('.cpp', ''))" -lws2_32
+            echo "($file.Replace('.cpp', ''))"
+            & g++ $file -o "($file.Replace('.cpp', ''))" -lws2_32
           }
         shell: powershell
 
