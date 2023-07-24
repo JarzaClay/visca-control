@@ -39,6 +39,7 @@ jobs:
       - name: Run C++ Programs
         run: |
           $ipAddress = $env:IP_ADDRESS
+          echo "IP: $ipAddress"
           foreach ($file in Get-ChildItem -Path . -Filter "*.exe" -Recurse) {
             if ($file.Name -notlike "*.cpp.exe") { # Skip the .cpp files themselves
               cmd /c "$file -i $ipAddress -p 1258 -m 01 -l"
