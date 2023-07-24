@@ -31,7 +31,7 @@ jobs:
           ls
           foreach ($file in Get-ChildItem -Path D:\a\visca-control\visca-control\repo\ -Filter "*.cpp" -Recurse) {
             echo "$($file.Name.Replace('.cpp', ''))"
-            & g++ "$file" -o "$($file.FullName.Replace('.cpp', ''))" -lws2_32
+            & g++ "$($file.FullName)" -o "$($file.FullName.Replace('.cpp', ''))" -lws2_32
           }
         shell: powershell
 
