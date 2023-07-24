@@ -28,17 +28,19 @@ jobs:
 
       - name: Compile C++ Files
         run: |
+          mkdir C:/Compiled
           foreach ($file in Get-ChildItem -Path . -Filter "*.cpp" -Recurse) {
-            & g++ $file -o "$($file.Replace('.cpp', ''))" -lws2_32
+            & g++ $file.FullName -o "C:/Compiled/$($file.FullName.Replace('.cpp', ''))" -lws2_32
           }
         shell: powershell
 
       - name: Run C++ Programs
         run: |
           echo "IP: ${{ vars.DYNAMIC_IP }}"
-          foreach ($file in Get-ChildItem -Path . -Filter "*.exe" -Recurse) {
+          foreach ($file in Get-ChildItem -Path C:/Compiled -Filter "*.exe" -Recurse) {
             if ($file -notlike "*.cpp") { # Skip the .cpp files themselves
-              cmd /c "$file -i ${{ vars.DYNAMIC_IP }} -p 80 -m 01 -l"
+              echo "C:/Compiled/$file"
+              cmd /c "C:/Compiled/$file -i ${{ vars.DYNAMIC_IP }} -p 80 -m 01 -l"
             }
           }
         shell: powershell
