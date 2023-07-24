@@ -64,25 +64,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          path: /home/runner/work/visca-control/visca-control/path/
-
       - name: Download 'compiled-binaries' artifact
         uses: actions/download-artifact@v3
         with:
           name: compiled-binaries
-          path: /home/runner/work/visca-control/visca-control/path/.
+          path: /home/runner/work/visca-control/visca-control/path/bin.
 
-      - name: Check directory for zip file
+      - name: Check directory for downloaded files
         run: |
-          ls /home/runner/work/visca-control/visca-control/path/
-        shell: bash
-
-      - name: Extract artifact contents to 'bin' folder
-        run: |
-          unzip -q /home/runner/work/visca-control/visca-control/path/compiled-binaries.zip -d /home/runner/work/visca-control/visca-control/path/bin/
+          ls /home/runner/work/visca-control/visca-control/path/bin
         shell: bash
 
       - name: Commit changes to 'bin' folder
