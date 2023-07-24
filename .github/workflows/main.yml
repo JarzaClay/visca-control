@@ -23,14 +23,14 @@ jobs:
 
       - name: Set up C++ compilers with Chocolatey
         run: |
-          choco install mingw -y --force
+          choco install mingw -y
         shell: powershell
 
-      - name: Compile C++ Files Dynamically with g++ # G++ dynamic
+      - name: Compile C++ Files Dynamically with g++ # G++ dynamic w/ non-system dlls static
         run: |
           foreach ($file in Get-ChildItem -Path D:\a\visca-control\visca-control\repo\ -Filter "*.cpp" -Recurse) {
             echo "$($file.Name.Replace('.cpp', ''))"
-            & g++ "$($file.FullName)" -o "$($file.FullName.Replace('.cpp', ''))" -lws2_32
+            & g++ "$($file.FullName)" -o "$($file.FullName.Replace('.cpp', ''))"  -lws2_32 -static-libgcc -static-libstdc++
           }
         shell: powershell
 
