@@ -64,6 +64,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          repository: JarzaClay/visca-control
+          path: /home/runner/work/visca-control/visca-control/path/
+
       - name: Download 'compiled-binaries' artifact
         uses: actions/download-artifact@v3
         with:
