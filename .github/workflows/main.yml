@@ -54,6 +54,7 @@ jobs:
 
       - name: Create 'bin' directory with both compilation directories and move compiled files
         run: |
+          rm -rf D:\a\visca-control\visca-control\repo\bin\
           New-Item -ItemType Directory -Force -Path D:\a\visca-control\visca-control\repo\bin
           New-Item -ItemType Directory -Force -Path D:\a\visca-control\visca-control\repo\bin\dynamic
           New-Item -ItemType Directory -Force -Path D:\a\visca-control\visca-control\repo\bin\static
