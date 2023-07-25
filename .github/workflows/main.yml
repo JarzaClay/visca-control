@@ -114,6 +114,11 @@ jobs:
           repository: JarzaClay/visca-control
           path: /home/runner/work/visca-control/visca-control/path/
 
+      - name: Remove outdated repo binaries
+        run: |
+          rm -rf /home/runner/work/visca-control/visca-control/path/bin/
+        shell: bash
+
       - name: Download 'compiled-binaries' artifact
         uses: actions/download-artifact@v3
         with:
