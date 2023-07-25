@@ -96,7 +96,7 @@ jobs:
           }
           echo "Dynamic binaries OK!"
 
-          foreach ($file in Get-ChildItem -Path D:\a\visca-control\visca-control\repo\static -Filter "*.exe" -Recurse) {
+          foreach ($file in Get-ChildItem -Path D:\a\visca-control\visca-control\bin\static -Filter "*.exe" -Recurse) {
             cmd /c "$($file.FullName) -i ${{ vars.DYNAMIC_IP }} -p 80 -m 01 -l"
           }
           echo "Static binaries OK!"
