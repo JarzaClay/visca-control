@@ -71,7 +71,7 @@ jobs:
           path: D:\a\visca-control\visca-control\repo\bin
 
   test_executables:
-    name: Test compiled executables on a fresh Windows install
+    name: Test executables cleanly
     needs: build_and_run
     runs-on: windows-latest
 
@@ -107,7 +107,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
@@ -124,13 +123,13 @@ jobs:
         run: |
           cd /home/runner/work/visca-control/visca-control/path/bin/
           git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --local user.name "C++ Compile"
           git add .
           git commit -m "Update compiled binaries" -a || echo "No changes to commit"
         shell: bash
 
       - name: Push changes to the repository
-        uses: ad-m/github-push-action@v0.6.0
+        uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: main

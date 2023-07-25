@@ -75,6 +75,9 @@ int main(int argc, char* argv[]) {
         }
         else if (arg == "-m" && (i + 1) < argc) {
             slot = argv[i + 1];
+            if (std::stoi(slot) < 10) {
+                slot = "0" + slot;
+            };
         }
         else if (arg == "-s" || arg == "-l") {
             command = arg == "-s" ? "8101043F01FF" : "8101043F02FF";
