@@ -62,7 +62,6 @@ jobs:
             Rename-Item -Path "D:\a\visca-control\visca-control\repo\bin\static\$file" -NewName "$($file.Name.Replace('_static.exe', '.exe'))"
           }
           Move-Item -Path D:\a\visca-control\visca-control\repo\*.exe -Destination D:\a\visca-control\visca-control\repo\bin\dynamic -Force
-          ls D:\a\visca-control\visca-control\repo\bin\static\
         shell: powershell
 
       - name: Upload 'bin' folder as artifact
